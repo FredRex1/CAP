@@ -13,7 +13,7 @@ def start():
     return render_template("start.html")
 
 
-@app.route("/signup")
+@app.route("/signup", methods=['GET', 'POST'])
 def signup():
     msg = ''
     if request.method == 'POST' and 'username' in request.form and 'firstname' in request.form and 'lastname' in request.form and 'dateofbirth' in request.form and 'ssn' in request.form and 'adderss' in request.form and 'gender' in request.form and 'email' in request.form:
@@ -45,7 +45,7 @@ def signup():
     return render_template("signup.html", msg=msg)
 
 
-@app.route("/login")
+@app.route("/login", methods=['GET', 'POST'])
 def login():
     msg = ''
     if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
