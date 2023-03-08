@@ -16,6 +16,7 @@ def start():
 
 @app.route("/signup", methods=['GET', 'POST'])
 def signup():
+    # not sure need sign up page
     msg = ''
     if request.method == 'POST' and 'firstname' in request.form and 'lastname' in request.form and 'dateofbirth' in request.form and 'ssn' in request.form and 'adderss' in request.form and 'gender' in request.form and 'email' in request.form:
         fname = request.form['firstname']
@@ -36,7 +37,8 @@ def signup():
         elif not re.match(r'[0-9]+', ssn):
             msg = 'ssn must contain only numbers !'
         else:
-            # not inster to the database yet
+            # not inster to the database
+            # yet id not sure provide by paratus or create by user
             # cursor.execute('INSERT INTO [sample].[dbo].[user] VALUES ( %s, %s, %s, %s, %s, %s, %s);', (
             #   fname, lname, email, ssn, birth, adderss, gender))
             msg = 'You have successfully registered !'
@@ -50,6 +52,7 @@ def signup():
 def login():
     msg = ''
     if request.method == 'POST' and 'id' in request.form and 'password' in request.form:
+        # ask id, id not sure provide by paratus or create by user
         id = request.form['id']
         password = request.form['password']
         cursor.execute(
