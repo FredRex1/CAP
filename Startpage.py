@@ -1,12 +1,16 @@
-from flask import Flask, redirect, url_for, render_template, request
+from flask import Flask, redirect, url_for, render_template, request, session
+from datetime import timedelta
 import pymssql
 import re
 
 # connect ms sql
-conn = pymssql.connect(host='host', database='database',
-                       user='user', password='password', charset='utf8')
+# conn = pymssql.connect(host='host', database='database',
+#                       user='user', password='password', charset='utf8')
+
 cursor = conn.cursor()
 app = Flask(__name__)
+app.secret_key = "very_happy_key"
+app.permanent_session_lifetime = timedelta(minutes=1)
 
 
 @app.route("/")
@@ -51,19 +55,28 @@ def signup():
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     msg = ''
-    if request.method == 'POST' and 'id' in request.form and 'password' in request.form:
+    if "userid" in session:
+        msg = "already login"
+        return render_template('login.html', msg=msg)
+
+    if request.method == 'POST' and 'AccountNumber' in request.form and 'dateofbirth' in request.form:
         # ask id, id not sure provide by paratus or create by user
-        id = request.form['id']
-        password = request.form['password']
+        AccountNumber = request.form['AccountNumber']
+        birth = request.form['dateofbirth']
         cursor.execute(
-            'SELECT [id],[password] FROM [sample].[dbo].[user] WHERE [id] = %s AND [password] = %s', (id, password))
+            'SELECT [AccountNumber],[birth] FROM [sample].[dbo].[user] WHERE [AccountNumber] = %s AND [birth] = %s', (AccountNumber, birth))
         account = cursor.fetchone()
         if account:
             msg = 'login success'
+            session.permanent = True
+            print("success")
+            # record userid in session for search propose
+            session["userid"] = AccountNumber
             # need to redirect to the file page
-            return render_template('index.html', msg=msg)
+            return render_template('login.html', msg=msg)
         else:
             msg = 'Incorrect username / password !'
+            print("faild")
 
     return render_template('login.html', msg=msg)
 
