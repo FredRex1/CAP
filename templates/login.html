@@ -37,15 +37,16 @@
 		<h1>Log In</h1>
 	</div>
 	<div class="mx-auto" style="width: 300px;">
-		<form>
+		<form action="{{ url_for('login') }}" method="post">
+      <div class="msg">{{ msg }}</div>
 			<div class="form-outline mb-4">
-				<input type="text" id="form2Example1" class="form-control" />
-				<label class="form-label" for="form2Example1">Account number</label>
+				<input type="text" id="AccountNumber" name = "AccountNumber" class="form-control" />
+				<label class="form-label" for="AccountNumber">Account number</label>
 			</div>
 
 			<div class="form-outline mb-4">
-				<input type="text" id="form2Example2" class="form-control" />
-				<label class="form-label" for="form2Example2">Date of Birth</label>
+				<input type="text" id="dateofbirth" name = "dateofbirth" class="form-control" />
+				<label class="form-label" for="dateofbirth">Date of Birth</label>
 			</div>
 
 			<div class="row mb-4">
@@ -55,13 +56,12 @@
 						<label class="form-check-label" for="form2Example31"> Remember me </label>
 					</div>
 				</div>
-
 				<div class="col">
 					<a href="#!">Find Account Number</a>
 				</div>
 			</div>
 
-			<button type="button" class="btn btn-primary btn-block mb-4">Sign in</button>
+			<input type="submit" class="btn btn-primary btn-block mb-4" value="Sign In">
 			<div class="text-center">
 				<p>Not a member? <a href="{{ url_for('signup')}}">Sign Up</a></p>
 			</div>
