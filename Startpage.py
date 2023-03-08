@@ -4,9 +4,7 @@ import pymssql
 import re
 
 # connect ms sql
-# conn = pymssql.connect(host='host', database='database',
-#                       user='user', password='password', charset='utf8')
-
+conn = pymssql.connect(host='host', database='database', user='user', password='password', charset='utf8')
 cursor = conn.cursor()
 app = Flask(__name__)
 app.secret_key = "very_happy_key"
