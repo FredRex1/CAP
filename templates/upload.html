@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="CSS/upload.css" rel="stylesheet" />
+    <title>Uploads</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="{{ url_for('start')}}">PARATUS</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav text-right ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{ url_for('start')}}">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{ url_for('why')}}">Why Paratus<span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{ url_for('aboutus')}}">About Us <span
+                            class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="myFiles.html">Files <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="accountPage.html">Account <span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+        </div>
+    </nav> <br>
+
+
+
+    <div class="row">
+        <div class="col-lg-5 mx-auto">
+            <div class="p-5 bg-white shadow rounded-lg"><img src="images/Upload.png" alt="" width="200"
+                    class="d-block mx-auto mb-4 rounded-pill">
+
+                <h6 class="text-center mb-4 text-muted">
+                    Upload your files
+                </h6>
+
+                <div class="custom-file overflow-hidden rounded-pill mb-5">
+                    <input id="customFile" type="file" class="custom-file-input rounded-pill">
+                    <label for="customFile" class="custom-file-label rounded-pill">Choose file</label>
+                </div>
+
+                <a href="myFiles.html"> <button class="btn btn-primary btn-block">Done</button> </a>
+
+            </div>
+        </div>
+    </div>
+    </div>
+
+</body>
