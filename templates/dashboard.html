@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="stylesheet" href="CSS/dashboard.css">
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+</head>
+
+<body>
+    <div class="sidebar">
+        <div class="logo-details">
+            <i class='bx bx-home-circle'></i>
+            <span class="logo_name">Paratus</span>
+        </div>
+        <ul class="nav-links">
+            <li>
+                <a href="dashboard.html" class="active">
+                    <i class='bx bx-grid-alt'></i>
+                    <span class="links_name">Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <a href="myFiles.html">
+                    <i class='bx bx-file'></i>
+                    <span class="links_name">Files</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class='bx bx-calendar'></i>
+                    <span class="links_name">Calendar</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class='bx bx-envelope'></i>
+                    <span class="links_name">Emails</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class='bx bx-chart'></i>
+                    <span class="links_name">Reports</span>
+                </a>
+            </li>
+
+
+            <li>
+                <a href="#">
+                    <i class='bx bx-cog'></i>
+                    <span class="links_name">Settings</span>
+                </a>
+            </li>
+            <li class="log_out">
+                <a href="#">
+                    <i class='bx bx-log-out'></i>
+                    <span class="links_name">Log out</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <section class="home-section">
+        <nav>
+            <div class="sidebar-button">
+                <i class='bx bx-menu sidebarBtn'></i>
+                <span class="dashboard">Dashboard</span>
+            </div>
+
+            <div class="logo-box">
+                <img src="images/paratuslogoicon.png" alt="">
+            </div>
+
+            <div class="profile-details">
+                <img src="images/blank-profile-picture.png" alt="">
+                <span class="admin_name">USER NAME</span>
+
+            </div>
+        </nav>
+
+        <div class="home-content">
+            <div class="overview-boxes">
+                <div class="box">
+                    <div class="right-side">
+                        <div class="box-topic">Total Files</div>
+                        <div class="number">(Num Files)</div>
+                    </div>
+                    <img
+                        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAYBJREFUaEPtmdFRwzAMhn93AViDPOEJgA0YgU4Ad5R3BggzwAasQCfIC5c9OkE4t7THQV3JsmInnPwaSf4/SbZyZ4eZLzdz/TCA2hVkVeDisbuFw70DLgGcZ4ke8Na/+GVWjB/OJEAQ7xzetTbcxlGEIAGaVfcB4EoVQBGCAzCoi98HVKhEOQCHJQa8/klGJkQxgL71rnnq7rQhigKE7GtDFAfQhqgCoAlRDUALoiqABkR1gFwIMUC4Fo8NuGbVHR18Mft9jNjtRPlNBiBWickASH9HDCDW09KMpvqNVoFUIVJ7A/i3LUSVNrVlpPNDfQ6kCj8MMuEANABpxn/7FW8hLeFUHOqsiVuI2ljruwHYHGD2UvFDTPUmU/fBzABiGZNmZvIVSBUotada1eaANLNcP6tA5UG26Vt/8k2OcwbGeWLi9dC6b/31KVMSYJRHPp54LICbz9aHBEYXCRA8vyEesHtmPWPun2O2XgDPlPiwAQsgR8nYvgYwdoap+LOvwBdbhhxA6pmxpQAAAABJRU5ErkJggg==" />
+                </div>
+                <div class="box">
+                    <div class="right-side">
+                        <div class="box-topic">Total Reports</div>
+                        <div class="number">NumReports</div>
+                    </div>
+                    <img
+                        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAhBJREFUaEPtmUFSwjAYhV9A2coNxJ3DuCAnkIUy7vQI3kA8gXIC4QReQXcOuOAG7cLpuBNOIN0iNs6PdqaWpjaxKUXDimGS5n3v/QlpwrDhH7bh+mEB1p2gTaDUCZw4+40FKjcMaAFoFCx2IgB3C8HlA3+eyMaWlhCJf0fFAVAvWHh8uFkVAZdBSAE6TvNOAKdrFr8cngH3Q+6dJWmRAhw7zdcSuB9qnoy4t6cKIMrgfqhhxL1Es9MSsAB5JmgTyNNNnWfZBHRcy7NP2RLwGcS5AOsCOMwCWioABvSG3Lsm4UfOQZshoO+pIEUA+AzoC4Bc3Ulx1X9DrTHm7ixs03Ga1wK4SkvCOEDoattp1WuYd2UgUfdJMLXfxvzlp22LaYAVVyUgWu4TqFGAuKvRUoiCUImFta/ivmmAFVeTaplA6HfV2je+mUuq6bhQGVCW2jcNIKvpCwH0F6gNoo5HQbKsPNH2RuZAhhVllgSSdeUxDaCyonwDUXXfyCTO4H5S6S9B2OefndJhgYESEmOBau+RP41JqY6rWfZApicxADFmwECA3aq6WhIAFRn6bQ2UkL4YnZ4WQMe1PPvYBPJ0U+dZ/zIBeuVLezXUMVK3z3TEvcT7ib97vP51weGWIAW/iqClfMFBWRNEgAqdNNAV065u/pr9pgxwKwi6WldMmoMW3s1esxZueWxAm4BN4JcOfACA2ElAHWcPbQAAAABJRU5ErkJggg==" />
+                </div>
+                <div class="box">
+                    <div class="right-side">
+                        <div class="box-topic">Next Event</div>
+                        <div class="number">Event Here</div>
+                    </div>
+                    <img
+                        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAWdJREFUaEPtmUtSwzAMhj8V9rBpGVaUG4ST0KPASeAocBJyhHTF0E3LntYMLclAqBnL8dRJR1nb1v+wpIwlDPyTgePHCOR2MNoBt8D9BC8TnZtd99exjUCjhDmgu4JBV8i9MuWUBxwFMD1wwlYIJR/cyyWVL7Y3B7bgT3gBzg8MvB1uxZobHwk/gTeeEG4zg9+FdzzLBbN9WPwEFix7oH6NuZIJ11oCv+p8bid8feY/B46LgLbTdnUstFMHO2AElJaYA20FlAImX25VKLmkygPNAaVgyZebA8klVR5oDigFa5Zrf0F8/SebA0bg20tzwHIgUAFL4lqoVL/TVoWsCgUmn/ftsuOrdfOI6zkn+FUilsfgcyCWeHtftk6ck8AKOEsFoNM5wlzG++cTR/y8vhtwlD1w4Z01hXrAsZ0rfJEY8ciIAsdVp2ug3SzM2VCy4S5qxKSNl2t99Jw4F+A/5bUvQGJxDN6BTz43yzHIknkvAAAAAElFTkSuQmCC" />
+                </div>
+                <div class="box">
+                    <div class="right-side">
+                        <div class="box-topic">Next Appointment</div>
+                        <div class="number">AppointHere</div>
+                    </div>
+                    <img
+                        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAV1JREFUaEPtmU1uwjAQRp97Abqs2AA3oCdpj9KepBylnASOAJuou9ILJBVVIlEriT3xH6DJKlLs8ffNi8dKxnDjl7lx/aiB0gQnE2iYN5fiDZUoVuj8bm3RopeCQwWEzlcDoRkMne9FoOFpCQ8fwBpYZt6wB2AP9bvh63zfew3ugVb8DnjMLNxe7gT185CJEQPzT+ClsPhu+a2heu3TMmbg+wqy32k+GKqV1MC/Ol+axNA5M0bgvgxIT9pQYr5l1puAGhAiUQJ2BoQJjD5cq1D0lAoDKgFhwrAzFrqnshNQAxZyJaB7wPoNE5oQ5zdx7KoRO54acL0CWkZLl1EXIenz7OeAVKBrvBpwZSj18+wEtAqVrkJKIAKBEzBLvTk94x8NVW9/4p5/r/91Z/ZXQOEH6rW4wXFG23ZpNm2LaeGJO9awY9tiepvUYoqlInWcyX3i1MJ846sB30ylGvcLX2fMMRI/fDAAAAAASUVORK5CYII=" />
+                </div>
+            </div>
+
+            <div class="info-boxes">
+                <div class="recent-info box">
+                    <div class="title">Recent Information</div>
+
+                    <div class="button">
+                        <a href="#">See All</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <script>
+        let sidebar = document.querySelector(".sidebar");
+        let sidebarBtn = document.querySelector(".sidebarBtn");
+        sidebarBtn.onclick = function () {
+            sidebar.classList.toggle("active");
+            if (sidebar.classList.contains("active")) {
+                sidebarBtn.classList.replace("bx-menu", "bx-menu-alt-right");
+            } else
+                sidebarBtn.classList.replace("bx-menu-alt-right", "bx-menu");
+        }
+    </script>
+
+</body>
+
+</html>
