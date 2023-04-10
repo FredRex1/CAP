@@ -88,7 +88,7 @@ def login():
             # record userid in session for search propose
             session["userid"] = AccountNumber
             # need to redirect to the file page
-            return render_template("dashboard.html", msg=msg)
+            return render_template("login.html", msg=msg)
         else:
             msg = "Incorrect username / password !"
             print("faild")
