@@ -1,14 +1,15 @@
 from flask import Flask, redirect, url_for, render_template, request, session, make_response, send_from_directory
-from datetime import timedelta
+from datetime import timedelta, datetime
 import pymssql
 import re
 from werkzeug.utils import secure_filename
 import random
 import os
 
+
 # connect ms sql
 conn = pymssql.connect(
-    host="DESKTOP-NH8EEHF", database="test", user="testuser", password="password", charset="utf8"
+    host="DESKTOP-NH8EEHF", database="test", user="testuser", password="1234", charset="utf8"
 )
 cursor = conn.cursor()
 app = Flask(__name__)
@@ -119,7 +120,7 @@ def accountPage():
     )
     account = cursor.fetchone()
     if account:
-        accountinfo = account + ("1234567890","this is an fake addresss")
+        accountinfo = account + ("1234567890","this is a fake addresss")
         return render_template("accountPage.html", accountinfo = accountinfo)
     #  the db do not have phone and address
     #  'phone': account[3],
@@ -137,7 +138,7 @@ def accountPageEdit():
             "SELECT [UserName], [UserEmail] FROM [test].[dbo].[user] WHERE [UserID] = %s",(userid)
     )
     account = cursor.fetchone()
-    accountinfo = account + ("1234567890","this is an fake addresss")
+    accountinfo = account + ("1234567890" , "this is a fake addresss")
 
     return render_template("accountPageEdit.html", accountinfo = accountinfo)
 
@@ -184,7 +185,7 @@ def myFiles():
     # Retrieve file information for all file IDs
     files = []
     for fileId in fileIds:
-        cursor.execute("SELECT * FROM [sample].[dbo].[File] WHERE [FileID]= %s", (fileId))
+        cursor.execute("SELECT * FROM [test].[dbo].[File] WHERE [FileID]= %s", (fileId))
         row = cursor.fetchone()
         if row:
             file_dict = {
@@ -202,12 +203,12 @@ def myFiles():
 #  from werkzeug.utils import secure_filename
 #  import os
 #  from flask import make_response
-app.config['UPLOAD_EXTENSIONS'] = [".pdf", ".doc", ".png", ".jpg"]
+app.config['UPLOAD_EXTENSIONS'] = [".pdf", ".doc", ".png", ".jpg", ".docx"]
 app.config['UPLOAD_PATH'] = 'File'
 
 @app.route("/upload", methods=["POST", "GET"])
 def upload():
-    if request.method == 'POST' and 'file' in request.form:
+    if request.method == 'POST' and 'file' in request.files:
         uploaded_file = request.files['file']
         filename = secure_filename(uploaded_file.filename)
         if filename != '':
@@ -216,6 +217,13 @@ def upload():
                 #TODO raise error
                 return make_response("error")
             uploaded_file.save(os.path.join(app.config['UPLOAD_PATH'], filename))
+            #TODO save file path to database
+            id = random.randint(2, 100000)
+            id2 = random.randint(2, 100000)
+            cursor.execute('INSERT INTO [test].[dbo].[File] VALUES ( %s, %s, %s, 1);', (id, filename, os.path.join(app.config['UPLOAD_PATH'], filename)))
+            cursor.execute('INSERT INTO [test].[dbo].[UserReport] VALUES ( %s, %s, %s, %s, %s);', (id2, datetime.now(), filename, session["userid"], id))
+            conn.commit()
+            #print(os.path.join(app.config['UPLOAD_PATH'], filename))
             return redirect(url_for("myFiles"))
 
     return render_template("upload.html")
