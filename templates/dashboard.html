@@ -76,7 +76,7 @@
 
             <div class="profile-details">
                 <img src="{{ url_for('static',filename='images/blank-profile-picture.png')}}" alt="">
-                <span class="admin_name">{{name}}</span>
+                <span class="admin_name">{{name[0]}}</span>
 
             </div>
         </nav>
@@ -86,7 +86,7 @@
                 <div class="box">
                     <div class="right-side">
                         <div class="box-topic">Total Files</div>
-                        <div class="number">(Num Files)</div>
+                        <div class="number">{{name[1]}}</div>
                     </div>
                     <img
                         src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAYBJREFUaEPtmdFRwzAMhn93AViDPOEJgA0YgU4Ad5R3BggzwAasQCfIC5c9OkE4t7THQV3JsmInnPwaSf4/SbZyZ4eZLzdz/TCA2hVkVeDisbuFw70DLgGcZ4ke8Na/+GVWjB/OJEAQ7xzetTbcxlGEIAGaVfcB4EoVQBGCAzCoi98HVKhEOQCHJQa8/klGJkQxgL71rnnq7rQhigKE7GtDFAfQhqgCoAlRDUALoiqABkR1gFwIMUC4Fo8NuGbVHR18Mft9jNjtRPlNBiBWickASH9HDCDW09KMpvqNVoFUIVJ7A/i3LUSVNrVlpPNDfQ6kCj8MMuEANABpxn/7FW8hLeFUHOqsiVuI2ljruwHYHGD2UvFDTPUmU/fBzABiGZNmZvIVSBUotada1eaANLNcP6tA5UG26Vt/8k2OcwbGeWLi9dC6b/31KVMSYJRHPp54LICbz9aHBEYXCRA8vyEesHtmPWPun2O2XgDPlPiwAQsgR8nYvgYwdoap+LOvwBdbhhxA6pmxpQAAAABJRU5ErkJggg==" />

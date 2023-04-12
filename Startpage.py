@@ -1,4 +1,5 @@
 from flask import Flask, redirect, url_for, render_template, request, session, make_response, send_from_directory
+from bs4 import BeautifulSoup as Soup
 from datetime import timedelta, datetime
 import pymssql
 import re
@@ -164,13 +165,21 @@ def updateAccount():
 def dashboard():    
     #TODO PULL PULL INFO from the database or user saved info form session
     userid = session["userid"]
+    name = []
     cursor.execute(
             "SELECT [UserID], [UserName] FROM [test].[dbo].[user] WHERE [UserID] = %s",(userid)
     )
     account = cursor.fetchone()
     if account:    
-        name = account[1]
-
+        print(account[1])
+        name.append(account[1])
+    
+    cursor.execute("SELECT [FileID] FROM [test].[dbo].[UserReport] WHERE [UserID]= %s", (userid))
+    account = cursor.fetchall()
+    if account:
+        name.append(len(account))
+    else:
+        name.append(0)
     return render_template("dashboard.html", name = name)
 
 
@@ -179,25 +188,32 @@ def dashboard():
 def myFiles():
     #TODO: return all file as request form at HTML Page such as picture and file path to download
     userid = session["userid"]
-    cursor.execute("SELECT [FileID] FROM [test].[dbo].[UserReport] WHERE [UserID]= %s", (userid))
-    fileIds = [row[0] for row in cursor.fetchall()]
-
+    cursor.execute("SELECT [FileID], [SendDate] FROM [test].[dbo].[UserReport] WHERE [UserID]= %s", (userid))
+    fileIds = [row for row in cursor.fetchall()]
     # Retrieve file information for all file IDs
-    files = []
+    counter = 0
+    box = ''
+    htmlText = ''
+    lenRow = len(fileIds)
+    print(lenRow)
     for fileId in fileIds:
-        cursor.execute("SELECT * FROM [test].[dbo].[File] WHERE [FileID]= %s", (fileId))
+        cursor.execute("SELECT * FROM [test].[dbo].[File] WHERE [FileID]= %s", (fileId[0]))
         row = cursor.fetchone()
         if row:
-            file_dict = {
-                'FileID': row[0],
-                'FileName': row[1],
-                'FilePath': row[2],
-                'HospitalSystemRegionID': row[3]
-            }
-            files.append(file_dict)
-
-    fileinfo = "amy be json file of info"
-    return render_template("myFiles.html", fileinfo = fileinfo)
+            if counter == 3:
+                counter = 0
+                lenRow -= 1
+                htmlText += '<div class="row"> <div class="col-lg-12">' + box + '</div></div>'
+                box = ''
+            else:
+                counter += 1
+                lenRow -= 1
+                filepath = url_for("download" , file =str(row[1]))
+                box += '<div class="file-box">  <div class="file"> <a href="%s"> <span class="corner"></span> <div class="icon"> <i class="fa fa-file"></i> </div> <div class="file-name"> %s \
+                                <br> <small>Added: %s</small>  </div> </a> </div> </div>' % (filepath, str(row[1]), str(fileId[1].strftime('%m/%d/%Y')))
+        
+    htmlText += '<div class="row"> <div class="col-lg-12">' + box + '</div></div>'
+    return render_template("myFiles.html", fileinfo = htmlText)
 
 #import this
 #  from werkzeug.utils import secure_filename
@@ -233,6 +249,11 @@ def logout():
     session.clear()
     return redirect(url_for("start"))
 
+@app.route('/<path:file>', methods=['GET', 'POST'])
+def download(file):
+    full_path = os.path.join(app.root_path, app.config['UPLOAD_PATH'])
+    print(full_path)
+    return send_from_directory(full_path, file)
 
 @app.route("/why")
 def why():
