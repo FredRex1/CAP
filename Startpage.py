@@ -1,5 +1,4 @@
 from flask import Flask, redirect, url_for, render_template, request, session, make_response, send_from_directory
-from bs4 import BeautifulSoup as Soup
 from datetime import timedelta, datetime
 import pymssql
 import re
@@ -16,6 +15,8 @@ cursor = conn.cursor()
 app = Flask(__name__)
 app.secret_key = "very_happy_key"
 app.permanent_session_lifetime = timedelta(minutes=300)
+app.config['UPLOAD_EXTENSIONS'] = [".pdf", ".doc", ".png", ".jpg", ".docx"]
+app.config['UPLOAD_PATH'] = 'File'
 
 
 @app.route("/")
@@ -71,6 +72,7 @@ def signup():
     elif request.method == "POST":
         msg = "Please fill out the form !"
 
+
     return render_template("signup.html", msg=msg)
 
 
@@ -109,23 +111,29 @@ def login():
     return render_template("login.html", msg=msg)
 
 
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect(url_for("start"))
+
+
 @app.route("/accountPage")
 def accountPage():
-    #info pull from data base later
-    #put info to json and send back to html
     accountinfo = []
     #TODO: PULL INFO from the database or user saved info form session
+    #TODO 
+    # the db do not have phone and address update db
     userid = session["userid"]
     cursor.execute(
             "SELECT [UserName], [UserEmail] FROM [test].[dbo].[user] WHERE [UserID] = %s",(userid)
     )
     account = cursor.fetchone()
     if account:
+        #TODO 
+        # the db do not have phone and address update db
         accountinfo = account + ("1234567890","this is a fake addresss")
         return render_template("accountPage.html", accountinfo = accountinfo)
-    #  the db do not have phone and address
-    #  'phone': account[3],
-    #  'address': account[4],
+
     
     #accountinfo = '{ "name":"First name", "email":"example@gmail.com", "phone":"1234567890", "Address": "123456"}'
     return render_template("accountPage.html", accountinfo = accountinfo)
@@ -152,9 +160,7 @@ def updateAccount():
         phone = request.form['phone']
         address = request.form['address']
 
-        #TODO: update the database
         cursor.execute("UPDATE [test].[dbo].[user] SET [UserName] = %s, [UserEmail] = %s WHERE [UserID] = %s", (name, email, session["userid"]))
-        # Commit the changes to the database
         conn.commit()
 
         message = "update success"
@@ -163,7 +169,6 @@ def updateAccount():
 
 @app.route("/dashboard")
 def dashboard():    
-    #TODO PULL PULL INFO from the database or user saved info form session
     userid = session["userid"]
     name = []
     cursor.execute(
@@ -180,13 +185,17 @@ def dashboard():
         name.append(len(account))
     else:
         name.append(0)
+
+    #TODO count the report 
+        name.append(0)
+    
+    #TODO Find The
     return render_template("dashboard.html", name = name)
 
 
 
 @app.route("/myFiles", methods=["GET", "POST"])
 def myFiles():
-    #TODO: return all file as request form at HTML Page such as picture and file path to download
     userid = session["userid"]
     cursor.execute("SELECT [FileID], [SendDate] FROM [test].[dbo].[UserReport] WHERE [UserID]= %s", (userid))
     fileIds = [row for row in cursor.fetchall()]
@@ -213,41 +222,103 @@ def myFiles():
                                 <br> <small>Added: %s</small>  </div> </a> </div> </div>' % (filepath, str(row[1]), str(fileId[1].strftime('%m/%d/%Y')))
         
     htmlText += '<div class="row"> <div class="col-lg-12">' + box + '</div></div>'
-    return render_template("myFiles.html", fileinfo = htmlText)
 
-#import this
-#  from werkzeug.utils import secure_filename
-#  import os
-#  from flask import make_response
-app.config['UPLOAD_EXTENSIONS'] = [".pdf", ".doc", ".png", ".jpg", ".docx"]
-app.config['UPLOAD_PATH'] = 'File'
+    #TODO if you want have sort add more here
+
+    return render_template("myFiles.html", fileinfo = htmlText)
 
 @app.route("/upload", methods=["POST", "GET"])
 def upload():
+
+    #TODO let the page show the fie name. aybe it can done at html page
+
+
     if request.method == 'POST' and 'file' in request.files:
         uploaded_file = request.files['file']
         filename = secure_filename(uploaded_file.filename)
         if filename != '':
             file_ext = os.path.splitext(filename)[1]
             if file_ext not in app.config['UPLOAD_EXTENSIONS']:
-                #TODO raise error
                 return make_response("error")
             uploaded_file.save(os.path.join(app.config['UPLOAD_PATH'], filename))
-            #TODO save file path to database
             id = random.randint(2, 100000)
             id2 = random.randint(2, 100000)
             cursor.execute('INSERT INTO [test].[dbo].[File] VALUES ( %s, %s, %s, 1);', (id, filename, os.path.join(app.config['UPLOAD_PATH'], filename)))
             cursor.execute('INSERT INTO [test].[dbo].[UserReport] VALUES ( %s, %s, %s, %s, %s);', (id2, datetime.now(), filename, session["userid"], id))
             conn.commit()
             #print(os.path.join(app.config['UPLOAD_PATH'], filename))
+
             return redirect(url_for("myFiles"))
+
+
 
     return render_template("upload.html")
     
-@app.route("/logout")
-def logout():
-    session.clear()
-    return redirect(url_for("start"))
+
+
+
+
+@app.route('/report')
+def report():
+    htmlText = ''
+
+    #TODO Do the Same thing From the File page. But pull info form db with different path
+    #path: User -> Recipients -> Schedular -> File
+    #in Recipients only if active = 1
+
+
+    return render_template("report.html", fileinfo = htmlText)
+
+
+@app.route('/email', methods=["GET"])
+def email():
+    #TODO html page not created yet
+    
+    #TODO send back these info to html so user can choose the option
+    #User: all User belone to same Hostpital System
+    #File: all file belone to you, may pull file name and file path(Check myFiles function)
+    info = []
+
+    return render_template("email.html", info)
+
+@app.route('/email', methods=["POST"])
+def scheduling():
+    #TODO html page not created yet
+
+    #TODO take follwing info to schedule a file to send
+    #User: User that want to send(more  then one)
+    #File: File want to send (only one) 
+    #Hostpital System: (only one defult is 1 because our signup page do not have a place for Hostpital System)
+    #Descrption: usually text form
+    #schedule Frequence: 6 option #check the database dirgram
+    #schedule period: 9 option #check the database dirgram
+    #ScheduleId: plan to auto increase but now please give a random number 
+
+    #TODO add Reciptence
+    #Descrption: usually text form
+    #Activate: defult is 0 (not send yet)
+    #scheduleID: id that create by pervious #TODO
+    #ReciptenceID: plan to auto increase but now please give a random number 
+
+
+
+    return redirect(url_for("dashboard"))
+
+
+@app.route('/calendar', methods=["GET"])
+def calendar():
+    #TODO html page not created yet
+
+    #TODO make calendar that retuen the scheduler info about user:
+    #User -> Reciptence -> scheduler 
+    #only date if Reciptence's avtive value = 0
+    #deturn the date for all schedule date
+
+    info = []
+
+    return render_template("email.html", info)
+
+
 
 @app.route('/<path:file>', methods=['GET', 'POST'])
 def download(file):
@@ -257,11 +328,13 @@ def download(file):
 
 @app.route("/why")
 def why():
+    #TODO in the html page add the info for why paratus
     return render_template("why.html")
 
 
 @app.route("/aboutus")
 def aboutus():
+    #TODO in the html page add the info for about us
     return render_template("aboutus.html")
 
 
