@@ -120,7 +120,6 @@ def logout():
 @app.route("/accountPage")
 def accountPage():
     accountinfo = []
-    #TODO: PULL INFO from the database or user saved info form session
     #TODO 
     # the db do not have phone and address update db
     userid = session["userid"]
@@ -189,7 +188,9 @@ def dashboard():
     #TODO count the report 
         name.append(0)
     
-    #TODO Find The
+    #TODO Find The most close report tahat schduled
+        name.append(0)
+
     return render_template("dashboard.html", name = name)
 
 
@@ -230,7 +231,7 @@ def myFiles():
 @app.route("/upload", methods=["POST", "GET"])
 def upload():
 
-    #TODO let the page show the fie name. aybe it can done at html page
+    #TODO let the page show the fie name. maybe it can done at html page
 
 
     if request.method == 'POST' and 'file' in request.files:
