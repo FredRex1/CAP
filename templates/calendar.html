@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="stylesheet" href="CSS/calendar.css">
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+</head>
+
+<body>
+    <div class="sidebar">
+        <div class="logo-details">
+            <i class='bx bx-home-circle'></i>
+            <span class="logo_name">Paratus</span>
+        </div>
+        <ul class="nav-links">
+            <li>
+                <a href="dashboard.html">
+                    <i class='bx bx-grid-alt'></i>
+                    <span class="links_name">Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <a href="myFiles.html">
+                    <i class='bx bx-file'></i>
+                    <span class="links_name">Files</span>
+                </a>
+            </li>
+            <li>
+                <a href="calendar.html" class="active">
+                    <i class='bx bx-calendar'></i>
+                    <span class="links_name">Calendar</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class='bx bx-envelope'></i>
+                    <span class="links_name">Emails</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class='bx bx-chart'></i>
+                    <span class="links_name">Reports</span>
+                </a>
+            </li>
+
+
+            <li>
+                <a href="accountPage.html">
+                    <i class='bx bx-cog'></i>
+                    <span class="links_name">Settings</span>
+                </a>
+            </li>
+            <li class="log_out">
+                <a href="#">
+                    <i class='bx bx-log-out'></i>
+                    <span class="links_name">Log out</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <section class="home-section">
+        <nav>
+            <div class="sidebar-button">
+                <i class='bx bx-menu sidebarBtn'></i>
+                <span class="dashboard">Calendar</span>
+            </div>
+
+            <div class="logo-box">
+                <img src="images/paratuslogoicon.png" alt="">
+            </div>
+
+            <div class="profile-details">
+                <img src="images/blank-profile-picture.png" alt="">
+                <span class="admin_name">USER NAME</span>
+
+            </div>
+        </nav>
+
+    </section>
+
+    <div class="calendar">
+
+        <div class="col leftCol">
+            <div class="content">
+                <h1 class="date">Tuesday<span>April 11th</span></h1>
+                <div class="notes">
+                    <p>
+                        <input type="text" value="" placeholder="new note" />
+                        <a href="#" title="Add note" class="addNote animate">+</a>
+                    </p>
+                    <ul class="noteList">
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col rightCol">
+            <div class="content">
+                <h2 class="year">2023</h2>
+                <ul class="months">
+                    <li><a href="#" title="Jan" data-value="1">Jan</a></li>
+                    <li><a href="#" title="Feb" data-value="2">Feb</a></li>
+                    <li><a href="#" title="Mar" data-value="3">Mar</a></li>
+                    <li><a href="#" title="Apr" data-value="4" class="selected">Apr</a></li>
+                    <li><a href="#" title="May" data-value="5">May</a></li>
+                    <li><a href="#" title="Jun" data-value="6">Jun</a></li>
+                    <li><a href="#" title="Jul" data-value="7">Jul</a></li>
+                    <li><a href="#" title="Aug" data-value="8">Aug</a></li>
+                    <li><a href="#" title="Sep" data-value="9">Sep</a></li>
+                    <li><a href="#" title="Oct" data-value="10">Oct</a></li>
+                    <li><a href="#" title="Nov" data-value="11">Nov</a></li>
+                    <li><a href="#" title="Dec" data-value="12">Dec</a></li>
+                </ul>
+                <div class="clearfix"></div>
+                <ul class="weekday">
+                    <li><a title="Sun" data-value="1">Sun</a></li>
+                    <li><a title="Mon" data-value="2">Mon</a></li>
+                    <li><a title="Tue" data-value="3">Tue</a></li>
+                    <li><a title="Wed" data-value="4">Wed</a></li>
+                    <li><a title="Thu" data-value="5">Thu</a></li>
+                    <li><a title="Fri" data-value="6">Fri</a></li>
+                    <li><a title="Sat" data-value="7">Sat</a></li>
+
+                </ul>
+                <div class="clearfix"></div>
+                <ul class="days">
+                    <script>
+                        function startOfMonth(date) {
+
+                            return new Date(date.getFullYear(), date.getMonth(), 1);
+
+                        }
+
+                        dt = new Date();
+
+                        console.log(startOfMonth(dt).toString());
+
+
+
+                        for (var _i = 26; _i <= 31; _i += 1) {
+                            var _addClass = '';
+
+                            if (_i === 11) { _addClass = ' class="selected"'; }
+
+
+
+                            document.write('<li><a href="#" title="' + _i + '" data-value="' + _i + '"' + _addClass + '>' + _i + '</a></li>');
+                        }
+
+                        for (var _i = 1; _i <= 30; _i += 1) {
+                            var _addClass = '';
+
+                            if (_i === 11) { _addClass = ' class="selected"'; }
+
+
+
+                            document.write('<li><a href="#" title="' + _i + '" data-value="' + _i + '"' + _addClass + '>' + _i + '</a></li>');
+                        }
+
+
+                    </script>
+                </ul>
+
+            </div>
+        </div>
+
+
+
+    </div>
+
+
+
+
+
+    <script>
+        let sidebar = document.querySelector(".sidebar");
+        let sidebarBtn = document.querySelector(".sidebarBtn");
+        sidebarBtn.onclick = function () {
+            sidebar.classList.toggle("active");
+            if (sidebar.classList.contains("active")) {
+                sidebarBtn.classList.replace("bx-menu", "bx-menu-alt-right");
+            } else
+                sidebarBtn.classList.replace("bx-menu-alt-right", "bx-menu");
+        }
+    </script>
+
+</body>
+
+</html>
