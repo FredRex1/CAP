@@ -2,6 +2,10 @@ from flask import Flask, redirect, url_for, render_template, request, session
 from datetime import timedelta
 import pymssql
 import re
+from werkzeug.utils import secure_filename
+import random
+import os
+#
 
 # connect ms sql
 conn = pymssql.connect(host='DESKTOP-HDBD7J8', database='test', user='test', password='test12345', charset='utf8')
