@@ -32,34 +32,34 @@
 		<h1>Sign Up</h1>
 		</div>
 		<div class="mx-auto" style="width: 300px;">
-			<form>
+			<form action = "{{ url_for('signup')}}" method = "post" autocomplete = "off">
 				<div class="form-outline mb-4">
-					<input type="text" id="firstname" class="form-control" />
+					<input type="text" id="firstname" name = "firstname" class="form-control" />
 					<label class="form-label" for="form2Example2">First Name</label>
 				</div>
 
 				<div class="form-outline mb-4">
-					<input type="text" id="lastname" class="form-control" />
+					<input type="text" id="lastname" name = "lastname" class="form-control" />
 					<label class="form-label" for="form2Example2">Last Name</label>
 				</div>
 				
 				<div class="form-outline mb-4">
-					<input type="text" id="emial" class="form-control" />
+					<input type="text" id="email" name = "email" class="form-control" />
 					<label class="form-label" for="form2Example2">Email</label>
 				</div>
 
 				<div class="form-outline mb-4">
-					<input type="text" id="socialsecurity" class="form-control" />
+					<input type="text" id="socialsecurity" name ="ssn" class="form-control" />
 					<label class="form-label" for="form2Example2">Social Security</label>
 				</div>
 			  
 				<div class="form-outline mb-4">
-				  <input type="text" id="dateOfBirth" class="form-control" />
+				  <input type="text" id="dateOfBirth" name = "dateofbirth" class="form-control" />
 				  <label class="form-label" for="form2Example2">Date of Birth</label>
 				</div>
 			    
 				<div class="form-outline mb-4">
-					<input type="text" id="accountNumber" class="form-control" />
+					<input type="text" id="accountNumber" name = "adderss" class="form-control" />
 					<label class="form-label" for="form2Example1">Address</label>
 				</div>
 				<div class="form-outline mb-4">
@@ -68,7 +68,7 @@
 					<input type="radio" name="gender" value="female"> Female		
 				</div>
 
-				<button type="button" class="btn btn-primary btn-block mb-4">Sign in</button>
+				<input type ="submit" class="btn btn-primary btn-block mb-4" value = "Sign in">
 				<div class="text-center">
 				  <p>Already a member? <a href="{{ url_for('login')}}">Login</a></p>
 				</div>
