@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
 
-    <link rel="stylesheet" href="CSS/dashboard.css">
+    <link rel="stylesheet" href="{{ url_for('static',filename='CSS/dashboard.css')}}">
     <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
@@ -17,19 +17,19 @@
         </div>
         <ul class="nav-links">
             <li>
-                <a href="dashboard.html" class="active">
+                <a href="{{ url_for('dashboard')}}" class="active">
                     <i class='bx bx-grid-alt'></i>
                     <span class="links_name">Dashboard</span>
                 </a>
             </li>
             <li>
-                <a href="myFiles.html">
+                <a href="{{ url_for('myFiles')}}">
                     <i class='bx bx-file'></i>
                     <span class="links_name">Files</span>
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="calendar.html">
                     <i class='bx bx-calendar'></i>
                     <span class="links_name">Calendar</span>
                 </a>
@@ -49,19 +49,20 @@
 
 
             <li>
-                <a href="accountPage.html">
+                <a href="{{ url_for('accountPage')}}">
                     <i class='bx bx-cog'></i>
                     <span class="links_name">Settings</span>
                 </a>
             </li>
             <li class="log_out">
-                <a href="#">
+                <a href="{{ url_for('logout')}}">
                     <i class='bx bx-log-out'></i>
                     <span class="links_name">Log out</span>
                 </a>
             </li>
         </ul>
     </div>
+    {%block content %}
     <section class="home-section">
         <nav>
             <div class="sidebar-button">
@@ -70,12 +71,12 @@
             </div>
 
             <div class="logo-box">
-                <img src="images/paratuslogoicon.png" alt="">
+                <img src="{{ url_for('static',filename='images/paratuslogoicon.png')}}" alt="">
             </div>
 
             <div class="profile-details">
-                <img src="images/blank-profile-picture.png" alt="">
-                <span class="admin_name">USER NAME</span>
+                <img src="{{ url_for('static',filename='images/blank-profile-picture.png')}}" alt="">
+                <span class="admin_name">{{name[0]}}</span>
 
             </div>
         </nav>
@@ -85,7 +86,7 @@
                 <div class="box">
                     <div class="right-side">
                         <div class="box-topic">Total Files</div>
-                        <div class="number">(Num Files)</div>
+                        <div class="number">{{name[1]}}</div>
                     </div>
                     <img
                         src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAYBJREFUaEPtmdFRwzAMhn93AViDPOEJgA0YgU4Ad5R3BggzwAasQCfIC5c9OkE4t7THQV3JsmInnPwaSf4/SbZyZ4eZLzdz/TCA2hVkVeDisbuFw70DLgGcZ4ke8Na/+GVWjB/OJEAQ7xzetTbcxlGEIAGaVfcB4EoVQBGCAzCoi98HVKhEOQCHJQa8/klGJkQxgL71rnnq7rQhigKE7GtDFAfQhqgCoAlRDUALoiqABkR1gFwIMUC4Fo8NuGbVHR18Mft9jNjtRPlNBiBWickASH9HDCDW09KMpvqNVoFUIVJ7A/i3LUSVNrVlpPNDfQ6kCj8MMuEANABpxn/7FW8hLeFUHOqsiVuI2ljruwHYHGD2UvFDTPUmU/fBzABiGZNmZvIVSBUotada1eaANLNcP6tA5UG26Vt/8k2OcwbGeWLi9dC6b/31KVMSYJRHPp54LICbz9aHBEYXCRA8vyEesHtmPWPun2O2XgDPlPiwAQsgR8nYvgYwdoap+LOvwBdbhhxA6pmxpQAAAABJRU5ErkJggg==" />
@@ -128,6 +129,7 @@
             </div>
         </div>
     </section>
+    {% endblock %}
 
     <script>
         let sidebar = document.querySelector(".sidebar");
