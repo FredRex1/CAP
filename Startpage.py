@@ -101,11 +101,19 @@ def login():
 def why():
     return render_template("why.html")
 
+@app.route("/compliance")
+def compliance():
+    #TODO in the html page add the info for why paratus
+    return render_template("compliance.html")
 
 @app.route("/aboutus")
 def aboutus():
     return render_template("aboutus.html")
 
+@app.route("/news")
+def news():
+    #TODO in the html page add the info for about us
+    return render_template("news.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
