@@ -8,9 +8,8 @@ import os
 
 
 # connect ms sql
-conn = pymssql.connect(
-    host="DESKTOP-NH8EEHF", database="test", user="testuser", password="1234", charset="utf8"
-)
+conn = pymssql.connect(host='DESKTOP-HDBD7J8', database='test', user='test', password='test12345', charset='utf8')
+
 cursor = conn.cursor()
 app = Flask(__name__)
 app.secret_key = "very_happy_key"
