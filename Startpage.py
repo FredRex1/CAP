@@ -8,7 +8,7 @@ import os
 
 
 # connect ms sql
-conn = pymssql.connect(host='localhost', database='test', user='testuser', password='1234', charset='utf8')
+conn = pymssql.connect(host='DESKTOP-HDBD7J8', database='test', user='test', password='test12345', charset='utf8')
 
 cursor = conn.cursor()
 app = Flask(__name__)
@@ -284,11 +284,11 @@ def report():
     #in Recipients only if active = 1
 
 
-    return render_template("report.html", fileinfo = htmlText)
+    return render_template("report.html")
 
 
-@app.route('/email', methods=["GET"])
-def email():
+@app.route('/scheduling', methods=["GET"])
+def scheduling():
     if "userid" not in session:
         return render_template("start.html")
     #TODO html page not created yet
@@ -298,33 +298,25 @@ def email():
     #File: all file belone to you, may pull file name and file path(Check myFiles function)
     info = []
 
-    return render_template("email.html", info)
+    #     #TODO html page not created yet
 
-@app.route('/email', methods=["POST"])
-def scheduling():
-    if "userid" not in session:
-        return render_template("start.html")
-    
-    #TODO html page not created yet
+#     #TODO take follwing info to schedule a file to send
+#     #User: User that want to send(more  then one)
+#     #File: File want to send (only one) 
+#     #Hostpital System: (only one defult is 1 because our signup page do not have a place for Hostpital System)
+#     #Descrption: usually text form
+#     #schedule Frequence: 6 option #check the database dirgram
+#     #schedule period: 9 option #check the database dirgram
+#     #ScheduleId: plan to auto increase but now please give a random number 
 
-    #TODO take follwing info to schedule a file to send
-    #User: User that want to send(more  then one)
-    #File: File want to send (only one) 
-    #Hostpital System: (only one defult is 1 because our signup page do not have a place for Hostpital System)
-    #Descrption: usually text form
-    #schedule Frequence: 6 option #check the database dirgram
-    #schedule period: 9 option #check the database dirgram
-    #ScheduleId: plan to auto increase but now please give a random number 
+#     #TODO add Reciptence
+#     #Descrption: usually text form
+#     #Activate: defult is 0 (not send yet)
+#     #scheduleID: id that create by pervious #TODO
+#     #ReciptenceID: plan to auto increase but now please give a random number 
 
-    #TODO add Reciptence
-    #Descrption: usually text form
-    #Activate: defult is 0 (not send yet)
-    #scheduleID: id that create by pervious #TODO
-    #ReciptenceID: plan to auto increase but now please give a random number 
+    return render_template("scheduling.html")
 
-
-
-    return redirect(url_for("emails.html"))
 
 
 @app.route('/calendar', methods=["GET"])
