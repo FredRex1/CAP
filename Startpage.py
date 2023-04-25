@@ -147,11 +147,11 @@ def accountPage():
         # 
         # the db do not have phone and address update db
         accountinfo = account + ("1234567890","this is a fake addresss", session["rolename"])
-        return render_template("accountPage.html", accountinfo = accountinfo)
+        return render_template("accountPage.html", username = session["username"], userrole = session["rolename"], accountinfo = accountinfo)
 
     
     #accountinfo = '{ "name":"First name", "email":"example@gmail.com", "phone":"1234567890", "Address": "123456"}'
-    return render_template("accountPage.html", accountinfo = accountinfo)
+    return render_template("accountPage.html", username = session["username"], userrole = session["rolename"], accountinfo = accountinfo)
 
 
 @app.route("/accountPageEdit", methods = ['GET'])

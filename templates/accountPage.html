@@ -78,7 +78,7 @@
 
             <div class="profile-details">
                 <img src="{{ url_for('static',filename='images/blank-profile-picture.png')}}" alt="">
-                <span class="admin_name">name[0]</span>
+                <span class="admin_name">{{username}}</span>
 
             </div>
         </nav>
@@ -94,7 +94,7 @@
                                 <img src="{{ url_for('static',filename='images/blank-profile-picture.png')}}" class="rounded-circle" width="150">
                                 <div class="mt-3">
                                     <h4>{{accountinfo[0]}}</h4>
-                                    <p class="text-secondary mb-1">(OCCUPATION)</p>
+                                    <p class="text-secondary mb-1">{{userrole}}</p>
 
 
                                 </div>
