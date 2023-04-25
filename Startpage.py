@@ -271,23 +271,65 @@ def upload():
     return render_template("upload.html")
 
 
+
 @app.route('/report')
 def report():
     if "userid" not in session:
         return render_template("start.html")
-    
     htmlText = ''
-
+    user_id = session["userid"]
     #TODO Do the Same thing From the File page. But pull info form db with different path
-    #path: User -> Recipients -> Schedular -> File
+    #path: User -> Recipients -> Scheduler -> File
     #in Recipients only if active = 1
+    # Create a database connection
+    
+    query = """
+        SELECT f.FileName, f.FilePath, sf.ScheduleTaskDesc
+        FROM [test].[dbo].[User] u
+        JOIN [test].[dbo].[Recipients] r ON u.UserID = r.UserID
+        JOIN [test].[dbo].[Scheduler] s ON r.ScheduleID = s.ScheduleID
+        JOIN [test].[dbo].[ScheduleTask] st ON s.ScheduleTaskID = st.ScheduleTaskID
+        JOIN [test].[dbo].[File] f ON s.FileID = f.FileID
+        JOIN [test].[dbo].[ScheduleFrequency] sf ON s.ScheduleFrequencyID = sf.ScheduleFrequencyID
+        WHERE r.Active = 1 AND u.UserID = %s
+    """
+    cursor = conn.cursor()
+    cursor.execute(query, (user_id,))
+    result = cursor.fetchall()
+    files = []
+    #for row in result:
+    #    file = {
+    #        'FileName': row[0],
+    #        'FilePath': row[1],
+    #        'ScheduleTaskDesc': row[2]
+    #    }
+    #    files.append(file)
 
+    counter = 0
+    box = ''
+    htmlText = ''
+    lenRow = len(result)
+    for row in result:
+        if counter == 3:
+            counter = 0
+            lenRow -= 1
+            htmlText += '<div class="row"> <div class="col-lg-12">' + box + '</div></div>'
+            box = ''
+        else:
+            counter += 1
+            lenRow -= 1
+            filepath = url_for("download" , file =str(row[1]))
+            box += '<div class="file-box">  <div class="file"> <a href="%s"> <span class="corner"></span> <div class="icon"> <i class="fa fa-file"></i> </div> <div class="file-name"> %s \
+                        <br> <small>Desc: %s</small>  </div> </a> </div> </div>' % (filepath, str(row[0]), str(row[2]))
+        
+    htmlText += '<div class="row"> <div class="col-lg-12">' + box + '</div></div>'
 
-    return render_template("report.html", fileinfo = htmlText)
+    return render_template("report.html", fileinfo = jsonify(files))
 
 
 @app.route('/email', methods=["GET"])
 def email():
+    
     if "userid" not in session:
         return render_template("start.html")
     #TODO html page not created yet
@@ -295,15 +337,59 @@ def email():
     #TODO send back these info to html so user can choose the option
     #User: all User belone to same Hostpital System
     #File: all file belone to you, may pull file name and file path(Check myFiles function)
-    info = []
+    userid = session["userid"]
+    query = f"SELECT RoleID, HospitalSystemRegionID FROM [test].[dbo].[User] WHERE UserID = {userid}"
+    cursor.execute(query)
+    roleid, hospitalid = cursor.fetchone()
+    
+    # Task 1: Find all UserIDs in User table with same HospitalSystemRegionID as #1
+    if session["rolename"] == "admin":
+        query = f"SELECT UserID FROM [test].[dbo].[User] WHERE HospitalSystemRegionID = {hospitalid}"
+    else:
+        query = f"SELECT UserID FROM [test].[dbo].[User] WHERE HospitalSystemRegionID = {hospitalid} AND RoleID <> 0"
+    cursor.execute(query)
+    userids = [row[0] for row in cursor]
 
+    # Task 2: Get UserName and UserEmail for all UserIDs in #2
+    query = f"SELECT UserName, UserEmail FROM [test].[dbo].[User] WHERE UserID IN ({','.join(str(uid) for uid in userids)})"
+    cursor.execute(query)
+    user_data = cursor.fetchall()
+
+    info = []
+    user = []
+    for row in user_data:
+        file = {
+            'UserName': row[0],
+            'UserEmail': row[1],
+        }
+        user.append(file)
+    info.append(user)
+
+    #file name
+    user_files = []
+    cursor.execute("SELECT [FileID], [SendDate] FROM [test].[dbo].[UserReport] WHERE [UserID]= %s", (userid))
+    fileIds = [row for row in cursor.fetchall()]
+    # Retrieve file information for all file IDs
+    for fileId in fileIds:
+        cursor.execute("SELECT * FROM [test].[dbo].[File] WHERE [FileID]= %s", (fileId[0]))
+        row = cursor.fetchone()
+        if row:
+            user_files.append(row[1])
+        
+    info.append(user_files)
+
+    #return this
+    #[user] = [{'UserName' ,'UserEmail'}, ....]
+    #[userfile] = [filename, ......]
+    #[[user][userfile]]
     return render_template("email.html", info)
+
 
 @app.route('/email', methods=["POST"])
 def scheduling():
     if "userid" not in session:
         return render_template("start.html")
-    
+
     #TODO html page not created yet
 
     #TODO take follwing info to schedule a file to send
@@ -315,14 +401,34 @@ def scheduling():
     #schedule period: 9 option #check the database dirgram
     #ScheduleId: plan to auto increase but now please give a random number 
 
-    #TODO add Reciptence
+#=========TODO This need get from the html GET=================
+    user = []
+    file = "filename"
+    Hostpital_System = 1
+    Descrption = "this is Descrption of this schedule"
+    schedule_Frequence = 1
+    Schedule_Period = 1
+    ScheduleId = random.randint(2, 100000)
+    ScheduleTaskId = random.randint(2, 100000)
+
+#=========================================================
+    cursor.execute('INSERT INTO [test].[dbo].[ScheduleTask] VALUES ( %s, %s, %s);', (ScheduleTaskId, Descrption, 0))
+    conn.commit()
+    cursor.execute("SELECT [FileID] FROM [test].[dbo].[File] WHERE [FileName]= %s", (file))
+    row = cursor.fetchone()
+    cursor.execute('INSERT INTO [test].[dbo].[SchedulePeriod] VALUES ( %s, %s, %s, %s, %s, %s);', (ScheduleId, ScheduleTaskId, Hostpital_System, schedule_Frequence, Schedule_Period, row[0]))
+    conn.commit()
+
+    # add Reciptence
     #Descrption: usually text form
     #Activate: defult is 0 (not send yet)
     #scheduleID: id that create by pervious #TODO
     #ReciptenceID: plan to auto increase but now please give a random number 
-
-
-
+    for R_user in user:
+        ReciptenceId = random.randint(2, 100000)
+        cursor.execute('INSERT INTO [test].[dbo].[Recipients] VALUES ( %s, %s, %s, %s);', (ReciptenceId, ScheduleId, R_user,0))
+#====================================================================
+    #TODO maybe add a pop up message show upload success
     return redirect(url_for("dashboard"))
 
 
@@ -330,18 +436,15 @@ def scheduling():
 def calendar():
     if "userid" not in session:
         return render_template("start.html")
-    
     #TODO html page not created yet
 
     #TODO make calendar that retuen the scheduler info about user:
     #User -> Reciptence -> scheduler 
     #only date if Reciptence's avtive value = 0
     #deturn the date for all schedule date
-
     info = []
 
     return render_template("calendar.html")
-
 
 
 @app.route('/<path:file>', methods=['GET', 'POST'])
