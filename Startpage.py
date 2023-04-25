@@ -215,9 +215,10 @@ def dashboard():
         name.append(0)
     
     #TODO Find The most close report tahat schduled
-        name.append(0)
+        name.append("none")
 
     #TODO Next Appointment
+        name.append("none")
 
     return render_template("dashboard.html", name = name)
 
