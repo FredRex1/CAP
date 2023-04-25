@@ -166,7 +166,7 @@ def accountPageEdit():
     
 
 
-    return render_template("accountPageEdit.html", accountinfo = accountinfo)
+    return render_template("accountPageEdit.html", userrole = session["rolename"], accountinfo = accountinfo)
 
 @app.route("/accountPageEdit", methods = ['POST'])
 def updateAccount():
