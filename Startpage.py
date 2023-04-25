@@ -113,7 +113,7 @@ def login():
 @app.route("/logout")
 def logout():
     session.clear()
-    return redirect(url_for("start"))
+    return render_template("logout.html")
 
 
 @app.route("/accountPage")
@@ -253,9 +253,6 @@ def upload():
 
 
     return render_template("upload.html")
-    
-
-
 
 
 @app.route('/report')
