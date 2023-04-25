@@ -263,6 +263,12 @@ def myFiles():
 def upload():
     if "userid" not in session:
         return render_template("start.html")
+    isExist = os.path.exists("File")
+    if not isExist:
+        # Create a new directory because it does not exist
+        os.makedirs("File")
+
+
 
     if request.method == 'POST' and 'file' in request.files:
         uploaded_file = request.files['file']
