@@ -180,6 +180,7 @@ def updateAccount():
         address = request.form['address']
 
         cursor.execute("UPDATE [test].[dbo].[user] SET [UserName] = %s, [UserEmail] = %s WHERE [UserID] = %s", (name, email, session["userid"]))
+        session["username"] = name
         conn.commit()
 
         message = "update success"
