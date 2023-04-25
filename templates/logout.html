@@ -2001,6 +2001,18 @@ SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
                     font-size:16px
                 }
             }
+            .button {
+            height:50px;
+            width:300px;
+            display: block;
+            text-align: center;
+            color: #ffffff;
+            background-color: rgb(94, 94, 94);
+            border-radius: 4px;
+            transition: 0.3s;
+            border: 2px solid transparent;
+            margin-top: 15px;
+            }
         </style>
         <style>
             .page-inner {
@@ -2179,59 +2191,25 @@ SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
                     </div>
                     <div id="e5479cfb-4d77-405c-8db3-92b5dc78b6d1" class="widget widget-content widget-content-content-6">
                         <div data-ux="Widget" role="region" id="e5479cfb-4d77-405c-8db3-92b5dc78b6d1" class="x-el x-el-div x-el c1-1 c1-2 c1-3 c1-b c1-c c1-d c1-e c1-f c1-g c1-1 c1-2 c1-b c1-c c1-d c1-e c1-f c1-g">
-                            <div>
-                                
+                            <div>                            
 								<div class="mx-auto" style="width: 200px;">
-									<h1>Sign Up</h1>
+									<h1>Logged out</h1>
 								</div>
+
 								<div class="mx-auto" style="width: 300px;">
-									<form action = "{{ url_for('signup')}}" method = "post" autocomplete = "off">
-										<div class="form-outline mb-4">
-											<input type="text" id="firstname" name = "firstname" class="form-control" />
-											<label class="form-label" for="form2Example2">First Name</label>
-										</div>
+                                    <a href="/" class="button">Home</a>
 
-										<div class="form-outline mb-4">
-											<input type="text" id="lastname" name = "lastname" class="form-control" />
-											<label class="form-label" for="form2Example2">Last Name</label>
-										</div>
-										
-										<div class="form-outline mb-4">
-											<input type="text" id="email" name = "email" class="form-control" />
-											<label class="form-label" for="form2Example2">Email</label>
-										</div>
+									<a href="/why" class="button">Why Paratus</a>
 
-										<div class="form-outline mb-4">
-											<input type="text" id="socialsecurity" name ="ssn" class="form-control" />
-											<label class="form-label" for="form2Example2">Social Security</label>
-										</div>
-									
-										<div class="form-outline mb-4">
-										<input type="text" id="dateOfBirth" name = "dateofbirth" class="form-control" />
-										<label class="form-label" for="form2Example2">Date of Birth</label>
-										</div>
-										
-										<div class="form-outline mb-4">
-											<input type="text" id="accountNumber" name = "adderss" class="form-control" />
-											<label class="form-label" for="form2Example1">Address</label>
-										</div>
-										<div class="form-outline mb-4">
-										<p>What is your gender?</p>
-											<input type="radio" name="gender" value="male"> Male
-											<input type="radio" name="gender" value="female"> Female		
-										</div>
+                                    <a href="/compliance" class="button">Compliance</a>
 
-										<input type ="submit" class="btn btn-primary btn-block mb-4" value = "Sign in">
-										<div class="text-center">
-										<p>Already a member? <a href="{{ url_for('login')}}">Login</a></p>
-										</div>
-									</form>
+                                    <a href="/aboutus" class="button">About Us</a>
+
+                                    <a href="/news" class="button">News</a>
+
+                                    <a href="/login" class="button">Login</a>
+
 								</div>
-
-
-
-
-
 
                             </div>
                         </div>

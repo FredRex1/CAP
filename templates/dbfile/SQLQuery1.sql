@@ -1,0 +1,8 @@
+INSERT INTO [test].[dbo].[HospitalSystem] VALUES ( 1, 'HospitalA')
+INSERT INTO [test].[dbo].[HospitalSystem] VALUES ( 2, 'HospitalB')
+INSERT INTO [test].[dbo].[HospitalSystemRegion] VALUES ( 1, 1, 'AregionA')
+INSERT INTO [test].[dbo].[HospitalSystemRegion] VALUES ( 2, 2, 'AregionB')
+INSERT INTO [test].[dbo].[Role] VALUES ( 1, 'admin')
+INSERT INTO [test].[dbo].[Role] VALUES ( 2, 'user')
+INSERT INTO [test].[dbo].[user] VALUES ( 1, 'admin1', '123@gmail.com', '1234', 1, 1)
+INSERT INTO [test].[dbo].[user] VALUES ( 1, 'User2', '456@gmail.com', '1234', 2, 2)

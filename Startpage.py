@@ -8,9 +8,8 @@ import os
 
 
 # connect ms sql
-conn = pymssql.connect(
-    host="DESKTOP-NH8EEHF", database="test", user="testuser", password="1234", charset="utf8"
-)
+conn = pymssql.connect(host='localhost', database='test', user='testuser', password='1234', charset='utf8')
+
 cursor = conn.cursor()
 app = Flask(__name__)
 app.secret_key = "very_happy_key"
@@ -68,6 +67,12 @@ def signup():
             cursor.execute('INSERT INTO [test].[dbo].[user] VALUES ( %s, %s, %s, %s, 1, 2);', (id, name + lname, email, birth))
             conn.commit()
             session["userid"] = id
+            cursor.execute(
+                "SELECT [RoleName] FROM [test].[dbo].[Role] WHERE [RoleID] = %s",
+                (2,),
+            )
+            rolename = cursor.fetchone()
+            session["rolename"] = rolename[0]
             msg = "You have successfully registered !"
             return redirect(url_for("dashboard"))
     elif request.method == "POST":
@@ -115,11 +120,13 @@ def login():
 @app.route("/logout")
 def logout():
     session.clear()
-    return redirect(url_for("start"))
+    return render_template("logout.html")
 
 
 @app.route("/accountPage")
 def accountPage():
+    if "userid" not in session:
+        return render_template("logout.html")
     accountinfo = []
     #TODO 
     # the db do not have phone and address update db
@@ -141,7 +148,8 @@ def accountPage():
 
 @app.route("/accountPageEdit", methods = ['GET'])
 def accountPageEdit():
-        
+    if "userid" not in session:
+        return render_template("logout.html")  
     userid = session["userid"]
     cursor.execute(
             "SELECT [UserName], [UserEmail] FROM [test].[dbo].[user] WHERE [UserID] = %s",(userid)
@@ -153,6 +161,8 @@ def accountPageEdit():
 
 @app.route("/accountPageEdit", methods = ['POST'])
 def updateAccount():
+    if "userid" not in session:
+        return render_template("logout.html")
     if request.method == 'POST' and 'name' in request.form and 'email' in request.form and 'phone' in request.form and 'address' in request.form:
         print("pass")
         name = request.form['name']
@@ -169,6 +179,8 @@ def updateAccount():
 
 @app.route("/dashboard")
 def dashboard():    
+    if "userid" not in session:
+        return render_template("logout.html")
     userid = session["userid"]
     name = []
     cursor.execute(
@@ -198,6 +210,8 @@ def dashboard():
 
 @app.route("/myFiles", methods=["GET", "POST"])
 def myFiles():
+    if "userid" not in session:
+        return render_template("start.html")
     userid = session["userid"]
     cursor.execute("SELECT [FileID], [SendDate] FROM [test].[dbo].[UserReport] WHERE [UserID]= %s", (userid))
     fileIds = [row for row in cursor.fetchall()]
@@ -231,7 +245,8 @@ def myFiles():
 
 @app.route("/upload", methods=["POST", "GET"])
 def upload():
-
+    if "userid" not in session:
+        return render_template("start.html")
     #TODO let the page show the fie name. maybe it can done at html page
 
 
@@ -255,13 +270,13 @@ def upload():
 
 
     return render_template("upload.html")
-    
-
-
 
 
 @app.route('/report')
 def report():
+    if "userid" not in session:
+        return render_template("start.html")
+    
     htmlText = ''
 
     #TODO Do the Same thing From the File page. But pull info form db with different path
@@ -274,6 +289,8 @@ def report():
 
 @app.route('/email', methods=["GET"])
 def email():
+    if "userid" not in session:
+        return render_template("start.html")
     #TODO html page not created yet
     
     #TODO send back these info to html so user can choose the option
@@ -285,6 +302,9 @@ def email():
 
 @app.route('/email', methods=["POST"])
 def scheduling():
+    if "userid" not in session:
+        return render_template("start.html")
+    
     #TODO html page not created yet
 
     #TODO take follwing info to schedule a file to send
@@ -309,6 +329,9 @@ def scheduling():
 
 @app.route('/calendar', methods=["GET"])
 def calendar():
+    if "userid" not in session:
+        return render_template("start.html")
+    
     #TODO html page not created yet
 
     #TODO make calendar that retuen the scheduler info about user:
@@ -318,7 +341,7 @@ def calendar():
 
     info = []
 
-    return render_template("email.html", info)
+    return render_template("calendar.html")
 
 
 
@@ -333,12 +356,20 @@ def why():
     #TODO in the html page add the info for why paratus
     return render_template("why.html")
 
+@app.route("/compliance")
+def compliance():
+    #TODO in the html page add the info for why paratus
+    return render_template("compliance.html")
 
 @app.route("/aboutus")
 def aboutus():
     #TODO in the html page add the info for about us
     return render_template("aboutus.html")
 
+@app.route("/news")
+def news():
+    #TODO in the html page add the info for about us
+    return render_template("news.html")
 
 
 if __name__ == "__main__":
