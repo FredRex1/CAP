@@ -332,12 +332,10 @@ def report():
                         <br> <small>Desc: %s</small>  </div> </a> </div> </div>' % (filepath, str(row[0]), str(row[2]))
         
     htmlText += '<div class="row"> <div class="col-lg-12">' + box + '</div></div>'
-    info = []
-    info.append(session["username"])
-    info.append(htmlText)
+
 
     #TODO in the html page make one similar to myfile.html but for the report 
-    return render_template("report.html", username = session["username"] ,info = info)
+    return render_template("report.html", username = session["username"] ,fileinfo = htmlText)
 
 
 @app.route('/email', methods=["GET"])
