@@ -229,7 +229,7 @@ a {
     position: fixed;
     height: 100%;
     width: 240px;
-    background: #0A2558;
+    background: #4f4f4f;
     transition: all 0.5s ease;
 }
 
@@ -277,11 +277,11 @@ a {
 }
 
 .sidebar .nav-links li a.active {
-    background: #081D45;
+    background: #3f3f3f;
 }
 
 .sidebar .nav-links li a:hover {
-    background: #081D45;
+    background: #3f3f3f;
 }
 
 .sidebar .nav-links li i {

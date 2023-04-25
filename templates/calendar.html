@@ -2,7 +2,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet"  href="{{url_for('static',filename='CSS/calendar.css')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='CSS/calendar.css')}}">
     <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
@@ -60,12 +60,12 @@
             </li>
         </ul>
     </div>
-    
+
     <section class="home-section">
         <nav>
             <div class="sidebar-button">
                 <i class='bx bx-menu sidebarBtn'></i>
-                <span class="dashboard">Dashboard</span>
+                <span class="dashboard">Calendar</span>
             </div>
 
             <div class="logo-box">
@@ -86,7 +86,7 @@
 
         <div class="col leftCol">
             <div class="content">
-                <h1 class="date">Tuesday<span>April 11th</span></h1>
+                <h1 class="date">Tuesday<span>April 25th</span></h1>
                 <div class="notes">
                     <p>
                         <input type="text" value="" placeholder="new note" />
@@ -145,7 +145,7 @@
                         for (var _i = 26; _i <= 31; _i += 1) {
                             var _addClass = '';
 
-                            if (_i === 11) { _addClass = ' class="selected"'; }
+
 
 
 
@@ -155,7 +155,7 @@
                         for (var _i = 1; _i <= 30; _i += 1) {
                             var _addClass = '';
 
-                            if (_i === 11) { _addClass = ' class="selected"'; }
+                            if (_i === 25) { _addClass = ' class="selected"'; }
 
 
 
@@ -188,6 +188,7 @@
                 sidebarBtn.classList.replace("bx-menu-alt-right", "bx-menu");
         }
     </script>
+
 
 </body>
 
