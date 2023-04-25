@@ -299,7 +299,7 @@ def scheduling():
 
 
 
-    return redirect(url_for("dashboard"))
+    return redirect(url_for("emails.html"))
 
 
 @app.route('/calendar', methods=["GET"])
