@@ -1,4 +1,4 @@
-from flask import Flask, redirect, url_for, render_template, request, session, make_response, send_from_directory, jsonify
+from flask import Flask, redirect, url_for, render_template, request, session, make_response, send_from_directory
 from datetime import timedelta, datetime
 import pymssql
 import re
@@ -8,9 +8,8 @@ import os
 
 
 # connect ms sql
-conn = pymssql.connect(
-    host="DESKTOP-NH8EEHF", database="test", user="testuser", password="1234", charset="utf8"
-)
+conn = pymssql.connect(host='DESKTOP-HDBD7J8', database='test', user='test', password='test12345', charset='utf8')
+
 cursor = conn.cursor()
 app = Flask(__name__)
 app.secret_key = "very_happy_key"
@@ -99,7 +98,7 @@ def login():
         AccountNumber = request.form["AccountNumber"]
         birth = request.form["dateofbirth"]
         cursor.execute(
-            "SELECT [UserID], [RoleID], [UserName] [UserEmail],[UserPassword] FROM [test].[dbo].[user] WHERE [UserEmail] = %s AND [UserPassword] = %s",
+            "SELECT [UserID],[UserEmail],[UserPassword] FROM [test].[dbo].[user] WHERE [UserEmail] = %s AND [UserPassword] = %s",
             (AccountNumber, birth),
         )
         account = cursor.fetchone()
@@ -109,13 +108,6 @@ def login():
             print("success")
             # record userid in session for search propose
             session["userid"] = account[0]
-            session["username"] = account[2]
-            cursor.execute(
-                "SELECT [RoleName] FROM [test].[dbo].[Role] WHERE [RoleID] = %s",
-                (account[1],),
-            )
-            rolename = cursor.fetchone()
-            session["rolename"] = rolename[0]
             # need to redirect to the file page
             return redirect(url_for("dashboard"))
         else:
@@ -136,7 +128,7 @@ def accountPage():
     if "userid" not in session:
         return render_template("logout.html")
     accountinfo = []
-    # 
+    #TODO 
     # the db do not have phone and address update db
     userid = session["userid"]
     cursor.execute(
@@ -144,9 +136,9 @@ def accountPage():
     )
     account = cursor.fetchone()
     if account:
-        # 
+        #TODO 
         # the db do not have phone and address update db
-        accountinfo = account + ("1234567890","this is a fake addresss", session["rolename"])
+        accountinfo = account + ("1234567890","this is a fake addresss")
         return render_template("accountPage.html", accountinfo = accountinfo)
 
     
@@ -156,15 +148,14 @@ def accountPage():
 
 @app.route("/accountPageEdit", methods = ['GET'])
 def accountPageEdit():
+    if "userid" not in session:
+        return render_template("logout.html")  
     userid = session["userid"]
     cursor.execute(
             "SELECT [UserName], [UserEmail] FROM [test].[dbo].[user] WHERE [UserID] = %s",(userid)
     )
     account = cursor.fetchone()
-    accountinfo = account + ("1234567890" , "this is a fake addresss", session["rolename"])
-    
-    
-
+    accountinfo = account + ("1234567890" , "this is a fake addresss")
 
     return render_template("accountPageEdit.html", accountinfo = accountinfo)
 
@@ -187,7 +178,7 @@ def updateAccount():
     return redirect(url_for("accountPageEdit"))
 
 @app.route("/dashboard")
-def dashboard():  
+def dashboard():    
     if "userid" not in session:
         return render_template("logout.html")
     userid = session["userid"]
@@ -207,17 +198,11 @@ def dashboard():
     else:
         name.append(0)
 
-    cursor.execute("SELECT [ScheduleID] FROM [test].[dbo].[Recipients] WHERE [UserID]= %s AND [Active] = 1", (userid))
-    report = cursor.fetchall()
-    if account:
-        name.append(len(report))
-    else:
+    #TODO count the report 
         name.append(0)
     
     #TODO Find The most close report tahat schduled
         name.append(0)
-
-    #TODO Next Appointment
 
     return render_template("dashboard.html", name = name)
 
@@ -254,20 +239,15 @@ def myFiles():
         
     htmlText += '<div class="row"> <div class="col-lg-12">' + box + '</div></div>'
 
-    # if you want have sort add more here
-    # TODO  have sort add more here
-    #If not REMOVE FROM THE HTML PAGE
-    return render_template("myFiles.html", username = session["username"], fileinfo = htmlText)
+    #TODO if you want have sort add more here
+
+    return render_template("myFiles.html", fileinfo = htmlText)
 
 @app.route("/upload", methods=["POST", "GET"])
 def upload():
     if "userid" not in session:
         return render_template("start.html")
-    isExist = os.path.exists("File")
-    if not isExist:
-        # Create a new directory because it does not exist
-        os.makedirs("File")
-
+    #TODO let the page show the fie name. maybe it can done at html page
 
 
     if request.method == 'POST' and 'file' in request.files:
@@ -290,156 +270,53 @@ def upload():
 
 
     return render_template("upload.html")
-    
-
-
 
 
 @app.route('/report')
 def report():
     if "userid" not in session:
         return render_template("start.html")
+    
     htmlText = ''
-    user_id = session["userid"]
-    
-    query = """
-        SELECT f.FileName, f.FilePath, st.ScheduleTaskDesc
-        FROM [test].[dbo].[User] u
-        JOIN [test].[dbo].[Recipients] r ON u.UserID = r.UserID
-        JOIN [test].[dbo].[Scheduler] s ON r.ScheduleID = s.ScheduleID
-        JOIN [test].[dbo].[ScheduleTask] st ON s.ScheduleTaskID = st.ScheduleTaskID
-        JOIN [test].[dbo].[File] f ON s.FileID = f.FileID
-        WHERE r.Active = 1 AND u.UserID = %s
-    """
-    cursor.execute(query, (user_id))
-    result = cursor.fetchall()
-    files = []
-    counter = 0
-    box = ''
-    htmlText = ''
-    lenRow = len(result)
-    for row in result:
-        if counter == 3:
-            counter = 0
-            lenRow -= 1
-            htmlText += '<div class="row"> <div class="col-lg-12">' + box + '</div></div>'
-            box = ''
-        else:
-            counter += 1
-            lenRow -= 1
-            filepath = url_for("download" , file =str(row[1]))
-            box += '<div class="file-box">  <div class="file"> <a href="%s"> <span class="corner"></span> <div class="icon"> <i class="fa fa-file"></i> </div> <div class="file-name"> %s \
-                        <br> <small>Desc: %s</small>  </div> </a> </div> </div>' % (filepath, str(row[0]), str(row[2]))
-        
-    htmlText += '<div class="row"> <div class="col-lg-12">' + box + '</div></div>'
-    info = []
-    info.append(session["username"])
-    info.append(htmlText)
 
-    #TODO in the html page make one similar to myfile.html but for the report 
-    return render_template("report.html", username = session["username"] ,info = info)
+    #TODO Do the Same thing From the File page. But pull info form db with different path
+    #path: User -> Recipients -> Schedular -> File
+    #in Recipients only if active = 1
 
 
-@app.route('/email', methods=["GET"])
-def email():
-    
-    if "userid" not in session:
-        return render_template("start.html")
-    
-    userid = session["userid"]
-    query = f"SELECT RoleID, HospitalSystemRegionID FROM [test].[dbo].[User] WHERE UserID = {userid}"
-    cursor.execute(query)
-    roleid, hospitalid = cursor.fetchone()
-    
-    # Task 1: Find all UserIDs in User table with same HospitalSystemRegionID as #1
-    if session["rolename"] == "admin":
-        query = f"SELECT UserID FROM [test].[dbo].[User] WHERE HospitalSystemRegionID = {hospitalid}"
-    else:
-        query = f"SELECT UserID FROM [test].[dbo].[User] WHERE HospitalSystemRegionID = {hospitalid} AND RoleID <> 0"
-    cursor.execute(query)
-    userids = [row[0] for row in cursor]
-
-    # Task 2: Get UserName and UserEmail for all UserIDs in #2
-    query = f"SELECT UserName, UserEmail FROM [test].[dbo].[User] WHERE UserID IN ({','.join(str(uid) for uid in userids)})"
-    cursor.execute(query)
-    user_data = cursor.fetchall()
-
-    info = []
-    info.append(session["username"])
-    user = []
-    for row in user_data:
-        file = {
-            'UserName': row[0],
-            'UserEmail': row[1],
-        }
-        user.append(file)
-    info.append(user)
-
-    #file name
-    user_files = []
-    cursor.execute("SELECT [FileID], [SendDate] FROM [test].[dbo].[UserReport] WHERE [UserID]= %s", (userid))
-    fileIds = [row for row in cursor.fetchall()]
-    # Retrieve file information for all file IDs
-    for fileId in fileIds:
-        cursor.execute("SELECT * FROM [test].[dbo].[File] WHERE [FileID]= %s", (fileId[0]))
-        row = cursor.fetchone()
-        if row:
-            user_files.append(row[1])
-        
-    info.append(user_files)
+    return render_template("report.html")
 
 
-    #TODO html page not created yet 
-    #return this
-    #[user] = [{'UserName' ,'UserEmail'}, ....]
-    #[userfile] = [filename, ......]
-    #[[user][userfile]]
-    #use this info to make the scheduling page
-    return render_template("scheduling.html", username = session["username"], info = info)
-
-@app.route('/email', methods=["POST"])
+@app.route('/scheduling', methods=["GET"])
 def scheduling():
     if "userid" not in session:
         return render_template("start.html")
-
     #TODO html page not created yet
+    
+    #TODO send back these info to html so user can choose the option
+    #User: all User belone to same Hostpital System
+    #File: all file belone to you, may pull file name and file path(Check myFiles function)
+    info = []
 
-    #take follwing info to schedule a file to send
-    #User: User that want to send(more  then one)
-    #File: File want to send (only one) 
-    #Hostpital System: (only one defult is 1 because our signup page do not have a place for Hostpital System)
-    #Descrption: usually text form
-    #schedule Frequence: 6 option #check the database dirgram
-    #schedule period: 9 option #check the database dirgram
-    #ScheduleId: plan to auto increase but now please give a random number 
+    #     #TODO html page not created yet
 
-#=========This need get from the html GET=================
-    #TODO get these info form the front-end page
-    user = []
-    file = "filename"
-    Hostpital_System = 1 
-    Descrption = "this is Descrption of this schedule"
-    schedule_Frequence = 1
-    Schedule_Period = 1
-    ScheduleId = random.randint(2, 100000)
-    ScheduleTaskId = random.randint(2, 100000)
+#     #TODO take follwing info to schedule a file to send
+#     #User: User that want to send(more  then one)
+#     #File: File want to send (only one) 
+#     #Hostpital System: (only one defult is 1 because our signup page do not have a place for Hostpital System)
+#     #Descrption: usually text form
+#     #schedule Frequence: 6 option #check the database dirgram
+#     #schedule period: 9 option #check the database dirgram
+#     #ScheduleId: plan to auto increase but now please give a random number 
 
-#=========================================================
-    cursor.execute('INSERT INTO [test].[dbo].[ScheduleTask] VALUES ( %s, %s, %s);', (ScheduleTaskId, Descrption, 0))
-    conn.commit()
-    cursor.execute("SELECT [FileID] FROM [test].[dbo].[File] WHERE [FileName]= %s", (file))
-    row = cursor.fetchone()
-    cursor.execute('INSERT INTO [test].[dbo].[SchedulePeriod] VALUES ( %s, %s, %s, %s, %s, %s);', (ScheduleId, ScheduleTaskId, Hostpital_System, schedule_Frequence, Schedule_Period, row[0]))
-    conn.commit()
+#     #TODO add Reciptence
+#     #Descrption: usually text form
+#     #Activate: defult is 0 (not send yet)
+#     #scheduleID: id that create by pervious #TODO
+#     #ReciptenceID: plan to auto increase but now please give a random number 
 
-    for R_user in user:
-        ReciptenceId = random.randint(2, 100000)
-        cursor.execute('INSERT INTO [test].[dbo].[Recipients] VALUES ( %s, %s, %s, %s);', (ReciptenceId, ScheduleId, R_user,0))
-#====================================================================
+    return render_template("scheduling.html")
 
-
-    #TODO maybe add a pop up message show upload success
-    return redirect(url_for("dashboard"))
 
 
 @app.route('/calendar', methods=["GET"])
@@ -447,16 +324,16 @@ def calendar():
     if "userid" not in session:
         return render_template("start.html")
     
+    #TODO html page not created yet
 
     #TODO make calendar that retuen the scheduler info about user:
     #User -> Reciptence -> scheduler 
     #only date if Reciptence's avtive value = 0
     #deturn the date for all schedule date
 
-
     info = []
-    info.append( session["username"])
-    return render_template("calendar.html", info = info)
+
+    return render_template("calendar.html")
 
 
 
@@ -468,20 +345,23 @@ def download(file):
 
 @app.route("/why")
 def why():
+    #TODO in the html page add the info for why paratus
     return render_template("why.html")
 
 @app.route("/compliance")
 def compliance():
+    #TODO in the html page add the info for why paratus
     return render_template("compliance.html")
 
 @app.route("/aboutus")
 def aboutus():
+    #TODO in the html page add the info for about us
     return render_template("aboutus.html")
 
 @app.route("/news")
 def news():
+    #TODO in the html page add the info for about us
     return render_template("news.html")
-
 
 
 if __name__ == "__main__":
