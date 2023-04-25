@@ -255,7 +255,8 @@ def myFiles():
     htmlText += '<div class="row"> <div class="col-lg-12">' + box + '</div></div>'
 
     # if you want have sort add more here
-
+    # TODO  have sort add more here
+    #If not REMOVE FROM THE HTML PAGE
     return render_template("myFiles.html", username = session["username"], fileinfo = htmlText)
 
 @app.route("/upload", methods=["POST", "GET"])
