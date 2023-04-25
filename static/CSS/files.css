@@ -7,9 +7,11 @@
     font-family: 'Poppins', sans-serif;
 }
 
+
+
 .file_manager .file a:hover .hover,
 .file_manager .file .file-name small {
-    display: block
+    display: block;
 }
 
 .file_manager .file {
@@ -102,15 +104,12 @@ a:hover {
     text-decoration: none;
 }
 
-body {
-    margin-top: 20px;
-    background: #eee;
-}
+
 
 .file-box {
     float: left;
     width: 220px;
-    margin-top: -1000px;
+
 }
 
 .file-manager h5 {
@@ -121,6 +120,7 @@ body {
     list-style: none outside none;
     margin: 0;
     padding: 0;
+
 }
 
 .folder-list li a {
@@ -416,6 +416,7 @@ a:hover {
     width: calc(100% - 240px);
     left: 240px;
     transition: all 0.5s ease;
+    top: 100px;
 }
 
 .sidebar.active~.home-section {
@@ -437,6 +438,7 @@ a:hover {
     padding: 0 20px;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
     transition: all 0.5s ease;
+    margin-top: -100px;
 }
 
 .sidebar.active~.home-section nav {
