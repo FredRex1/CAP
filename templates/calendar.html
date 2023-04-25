@@ -2,8 +2,7 @@
 
 <head>
     <meta charset="UTF-8">
-
-    <link rel="stylesheet" href="CSS/calendar.css">
+    <link rel="stylesheet"  href="{{url_for('static',filename='CSS/calendar.css')}}">
     <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
@@ -17,19 +16,19 @@
         </div>
         <ul class="nav-links">
             <li>
-                <a href="dashboard.html">
+                <a href="{{ url_for('dashboard')}}" class="active">
                     <i class='bx bx-grid-alt'></i>
                     <span class="links_name">Dashboard</span>
                 </a>
             </li>
             <li>
-                <a href="myFiles.html">
+                <a href="{{ url_for('myFiles')}}">
                     <i class='bx bx-file'></i>
                     <span class="links_name">Files</span>
                 </a>
             </li>
             <li>
-                <a href="calendar.html" class="active">
+                <a href="{{ url_for('calendar')}}">
                     <i class='bx bx-calendar'></i>
                     <span class="links_name">Calendar</span>
                 </a>
@@ -49,38 +48,40 @@
 
 
             <li>
-                <a href="accountPage.html">
+                <a href="{{ url_for('accountPage')}}">
                     <i class='bx bx-cog'></i>
                     <span class="links_name">Settings</span>
                 </a>
             </li>
             <li class="log_out">
-                <a href="#">
+                <a href="{{ url_for('logout')}}">
                     <i class='bx bx-log-out'></i>
                     <span class="links_name">Log out</span>
                 </a>
             </li>
         </ul>
     </div>
+
     <section class="home-section">
         <nav>
             <div class="sidebar-button">
                 <i class='bx bx-menu sidebarBtn'></i>
-                <span class="dashboard">Calendar</span>
+                <span class="dashboard">Dashboard</span>
             </div>
 
             <div class="logo-box">
-                <img src="images/paratuslogoicon.png" alt="">
+                <img src="{{ url_for('static',filename='images/paratuslogoicon.png')}}" alt="">
             </div>
 
             <div class="profile-details">
-                <img src="images/blank-profile-picture.png" alt="">
-                <span class="admin_name">USER NAME</span>
+                <img src="{{ url_for('static',filename='images/blank-profile-picture.png')}}" alt="">
+                <span class="admin_name">name[0]</span>
 
             </div>
         </nav>
 
     </section>
+
 
     <div class="calendar">
 
