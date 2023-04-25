@@ -3,12 +3,12 @@
 
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet"  href="{{url_for('static',filename='CSS/calendar.css')}}">
     <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <link href="{{ url_for('static',filename='CSS/files.css')}}" rel="stylesheet" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link href= "{{ url_for('static',filename='CSS/files.css')}}" rel="stylesheet" />
+
     <title>My Files</title>
 </head>
 
@@ -69,7 +69,7 @@
         <nav>
             <div class="sidebar-button">
                 <i class='bx bx-menu sidebarBtn'></i>
-                <span class="dashboard">Dashboard</span>
+                <span class="dashboard">Files</span>
             </div>
 
             <div class="logo-box">
@@ -82,46 +82,57 @@
 
             </div>
         </nav>
-        <h2 class="entry-title" style="text-align: center; width: 100%;" itemprop="headline"><a rel="bookmark">File
-            Manager</a></h2><br>
-
-        </h2>
 
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-3">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-content">
-                        <div class="file-manager">
-                            <h5>Show:</h5>
-                            <a href="#" class="file-control active">All</a>
-                            <a href="#" class="file-control">Documents</a>
-                            <a href="#" class="file-control">Images</a>
-                            <div class="hr-line-dashed"></div>
-                            <a href="{{ url_for('upload')}}"><button class="btn btn-primary btn-block">Upload Files</button></a>
-                            <div class="hr-line-dashed"></div>
-                            <h5>Folders</h5>
-                            <ul class="folder-list" style="padding: 0">
-                                <li><a href=""><i class="fa fa-folder"></i> Files</a></li>
-                                <li><a href=""><i class="fa fa-folder"></i> Pictures</a></li>
-                            </ul>
-                            <h5 class="tag-title">Tags</h5>
-                            <ul class="tag-list" style="padding: 0">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-content">
+                            <div class="file-manager">
+                                <h5>Show:</h5>
+                                <a href="#" class="file-control active">All</a>
+                                <a href="#" class="file-control">Documents</a>
+                                <a href="#" class="file-control">Images</a>
+                                <div class="hr-line-dashed"></div>
+                                <a href="{{ url_for('upload')}}"><button class="btn btn-primary btn-block">Upload
+                                        Files</button></a>
+                                <div class="hr-line-dashed"></div>
+                                <h5>Folders</h5>
+                                <ul class="folder-list" style="padding: 0">
+                                    <li><a href=""><i class="fa fa-folder"></i> Files</a></li>
+                                    <li><a href=""><i class="fa fa-folder"></i> Pictures</a></li>
+                                </ul>
+                                <h5 class="tag-title">Tags</h5>
+                                <ul class="tag-list" style="padding: 0">
 
-                                <li><a href="">Work</a></li>
-                                <li><a href="">Personal</a></li>
-                            </ul>
-                            <div class="clearfix"></div>
+                                    <li><a href="">Work</a></li>
+                                    <li><a href="">Personal</a></li>
+                                </ul>
+                                <div class="clearfix"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-9 animated fadeInRight">
-                {{fileinfo | safe}}
-            </div>
+                <div class="col-md-9 animated fadeInRight">
+                    {{fileinfo | safe}}
+                </div>
     </section>
 
+    <script>
+        let sidebar = document.querySelector(".sidebar");
+        let sidebarBtn = document.querySelector(".sidebarBtn");
+        sidebarBtn.onclick = function () {
+            sidebar.classList.toggle("active");
+            if (sidebar.classList.contains("active")) {
+                sidebarBtn.classList.replace("bx-menu", "bx-menu-alt-right");
+            } else
+                sidebarBtn.classList.replace("bx-menu-alt-right", "bx-menu");
+        }
+    </script>
+
+
 </body>
+
 
 </html>
