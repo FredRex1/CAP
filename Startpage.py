@@ -74,6 +74,7 @@ def signup():
             )
             rolename = cursor.fetchone()
             session["rolename"] = rolename[0]
+            session["username"] = name
             msg = "You have successfully registered !"
             return redirect(url_for("dashboard"))
     elif request.method == "POST":
