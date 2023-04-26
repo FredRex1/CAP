@@ -32,7 +32,8 @@
                     <a class="nav-link" href="{{ url_for('myFiles')}}">Files <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="{{ url_for('accountPage')}}">Account <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="{{ url_for('accountPage')}}">Account <span
+                            class="sr-only">(current)</span></a>
                 </li>
             </ul>
         </div>
@@ -45,7 +46,8 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="d-flex flex-column align-items-center text-center">
-                                <img src="{{ url_for('static',filename='images/blank-profile-picture.png')}}" class="rounded-circle" width="150">
+                                <img src="{{ url_for('static',filename='images/blank-profile-picture.png')}}"
+                                    class="rounded-circle" width="150">
                                 <div class="mt-3">
                                     <h4>{{accountinfo[0]}}</h4>
                                     <p class="text-secondary mb-1">{{userrole}}</p>
@@ -59,49 +61,63 @@
                 </div>
                 <div class="col-lg-8">
                     <div class="card">
-                        <form action = "{{ url_for('accountPageEdit')}}" method = "post" autocomplete = "off" >
+                        <form action="{{ url_for('accountPageEdit')}}" method="post" autocomplete="off">
 
-                        <div class="card-body">
-                            <div class="row mb-3">
-                                <div class="col-sm-3">
-                                    <h6 class="mb-0">Full Name</h6>
+                            <div class="card-body">
+                                <div class="row mb-3">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">Full Name</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                        <input type="text" name="name" id="name" class="form-control"
+                                            value={{accountinfo[0]}}>
+                                    </div>
                                 </div>
-                                <div class="col-sm-9 text-secondary">
-                                    <input type="text" name = "name"  id = "name" class="form-control" value={{accountinfo[0]}}>
+                                <div class="row mb-3">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">Email</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                        <input type="text" name="email" id="email" class="form-control"
+                                            value={{accountinfo[1]}}>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row mb-3">
-                                <div class="col-sm-3">
-                                    <h6 class="mb-0">Email</h6>
+                                <div class="row mb-3">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">Phone</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                        <input type="text" name="phone" id="phone" class="form-control"
+                                            value={{accountinfo[2]}}>
+                                    </div>
                                 </div>
-                                <div class="col-sm-9 text-secondary">
-                                    <input type="text" name = "email"  id = "email" class="form-control" value= {{accountinfo[1]}}>
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <div class="col-sm-3">
-                                    <h6 class="mb-0">Phone</h6>
-                                </div>
-                                <div class="col-sm-9 text-secondary">
-                                    <input type="text" name = "phone" id = "phone" class="form-control" value={{accountinfo[2]}}>
-                                </div>
-                            </div>
 
-                            <div class="row mb-3">
-                                <div class="col-sm-3">
-                                    <h6 class="mb-0">Address</h6>
+                                <div class="row mb-3">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">Address</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                        <input type="text" name="address" id="address" class="form-control"
+                                            value="{{accountinfo[3]}}">
+                                    </div>
                                 </div>
-                                <div class="col-sm-9 text-secondary">
-                                    <input type="text" name = "address" id = "address" class="form-control" value="{{accountinfo[3]}}">
+                                <div class="row mb-3">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">Date of Birth</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                        <input type="text" name="dateofbirth" id="dateofbirth" class="form-control"
+                                            value="{{accountinfo[3]}}">
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-3"></div>
+                                    <div class="col-sm-9 text-secondary">
+                                        <input type="submit" class="btn btn-primary px-4" value="Save Changes">
+                                    </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-sm-3"></div>
-                                <div class="col-sm-9 text-secondary">
-                                    <input type ="submit" class="btn btn-primary px-4" value="Save Changes">
-                                </div>
-                            </div>
-                        </div>
                         </form>
 
                     </div>
