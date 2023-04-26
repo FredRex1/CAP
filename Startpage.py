@@ -141,13 +141,13 @@ def accountPage():
     # the db do not have phone and address update db
     userid = session["userid"]
     cursor.execute(
-            "SELECT [UserName], [UserEmail] FROM [test].[dbo].[user] WHERE [UserID] = %s",(userid)
+            "SELECT [UserName], [UserEmail], [UserPassword] FROM [test].[dbo].[user] WHERE [UserID] = %s",(userid)
     )
     account = cursor.fetchone()
     if account:
         # 
         # the db do not have phone and address update db
-        accountinfo = account + ("1234567890","this is a fake addresss", session["rolename"])
+        accountinfo = account + ("1234567890","this is a fake addresss", session["rolename"], "male")
         return render_template("accountPage.html", username = session["username"], userrole = session["rolename"], accountinfo = accountinfo)
 
     
@@ -159,7 +159,7 @@ def accountPage():
 def accountPageEdit():
     userid = session["userid"]
     cursor.execute(
-            "SELECT [UserName], [UserEmail] FROM [test].[dbo].[user] WHERE [UserID] = %s",(userid)
+            "SELECT [UserName], [UserEmail], [UserPassword] FROM [test].[dbo].[user] WHERE [UserID] = %s",(userid)
     )
     account = cursor.fetchone()
     accountinfo = account + ("1234567890" , "this is a fake addresss", session["rolename"])
@@ -173,14 +173,15 @@ def accountPageEdit():
 def updateAccount():
     if "userid" not in session:
         return render_template("logout.html")
-    if request.method == 'POST' and 'name' in request.form and 'email' in request.form and 'phone' in request.form and 'address' in request.form:
+    if request.method == 'POST' and 'name' in request.form and 'email' in request.form and 'phone' in request.form and 'address' in request.form and 'dateofbirth' in request.form:
         print("pass")
         name = request.form['name']
         email = request.form['email']
         phone = request.form['phone']
         address = request.form['address']
+        birth = request.form['dateofbirth']
 
-        cursor.execute("UPDATE [test].[dbo].[user] SET [UserName] = %s, [UserEmail] = %s WHERE [UserID] = %s", (name, email, session["userid"]))
+        cursor.execute("UPDATE [test].[dbo].[user] SET [UserName] = %s, [UserEmail] = %s, [UserPassword] = %s WHERE [UserID] = %s", (name, email, birth, session["userid"]))
         session["username"] = name
         conn.commit()
 
