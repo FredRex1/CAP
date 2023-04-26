@@ -65,7 +65,7 @@ def signup():
             # not inster to the database
             # yet id not sure provide by paratus or create by user
             id = random.randint(2, 100000)
-            cursor.execute('INSERT INTO [test].[dbo].[user] VALUES ( %s, %s, %s, %s, 1, 2);', (id, name + lname, email, birth))
+            cursor.execute('INSERT INTO [test].[dbo].[user] VALUES ( %s, %s, %s, %s, 1, 2);', (id, name, email, birth))
             conn.commit()
             session["userid"] = id
             cursor.execute(
