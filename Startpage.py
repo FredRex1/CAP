@@ -210,7 +210,7 @@ def dashboard():
 
     cursor.execute("SELECT [ScheduleID] FROM [test].[dbo].[Recipients] WHERE [UserID]= %s AND [Active] = 1", (userid))
     report = cursor.fetchall()
-    if account:
+    if report:
         name.append(len(report))
     else:
         name.append(0)
