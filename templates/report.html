@@ -1,11 +1,15 @@
 <!DOCTYPE html>
+<html>
 
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="{{url_for('static',filename='CSS/calendar.css')}}">
     <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <link href="{{ url_for('static',filename='CSS/files.css')}}" rel="stylesheet" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>Report</title>
 </head>
 
 <body>
@@ -22,7 +26,7 @@
                 </a>
             </li>
             <li>
-                <a href="{{ url_for('myFiles')}}">
+                <a href="{{ url_for('myFiles')}}" class="active">
                     <i class='bx bx-file'></i>
                     <span class="links_name">Files</span>
                 </a>
@@ -40,7 +44,7 @@
                 </a>
             </li>
             <li>
-                <a href="{{ url_for('report')}}" class="active">
+                <a href="{{ url_for('report')}}">
                     <i class='bx bx-chart'></i>
                     <span class="links_name">Reports</span>
                 </a>
@@ -65,22 +69,27 @@
         <nav>
             <div class="sidebar-button">
                 <i class='bx bx-menu sidebarBtn'></i>
-                <span class="dashboard">Reports</span>
+                <span class="dashboard">Files</span>
             </div>
 
             <div class="logo-box">
-                <img src="{{ url_for('static',filename='images/paratuslogoicon.png')}}" alt="">
+                <img src="{{ url_for('static',filename='images/paratuslogoicon.png')}}" alt="" class="center">
             </div>
 
-            <div class="profile-details">
+            <div class=" profile-details">
                 <img src="{{ url_for('static',filename='images/blank-profile-picture.png')}}" alt="">
                 <span class="admin_name">{{username}}</span>
 
             </div>
         </nav>
 
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-9 animated fadeInRight">
+                    {{fileinfo | safe}}
+                </div>
     </section>
-    </div>
 
     <script>
         let sidebar = document.querySelector(".sidebar");
@@ -96,5 +105,6 @@
 
 
 </body>
+
 
 </html>
